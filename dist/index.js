@@ -25197,9 +25197,10 @@ const run = (callback) => {
   const password = core.getInput("password");
   const clientKey = core.getInput("client_key");
   const tlsAuthKey = core.getInput("tls_auth_key");
-  const tlsCryptV1Key = core.getInput("tls_crypt_v1_key");
+  const tlsCryptKey = core.getInput("tls_crypt_key");
   const tlsCryptV2Key = core.getInput("tls_crypt_v2_key");
-  const passphrase = core.getInput("passphrase");
+  const echoConfig = core.getInput("echo_config");
+  const askpass = core.getInput("askpass");
 
   if (!fs.existsSync(configFile)) {
     throw new Error(`config file '${configFile}' not found`);
@@ -25218,10 +25219,10 @@ const run = (callback) => {
     fs.writeFileSync("up.txt", [username, password].join("\n"), { mode: 0o600 });
   }
 
-  // certificate passphrase
-  if (passphrase) {
+  // askpass
+  if (askpass) {
     fs.appendFileSync(configFile, "askpass ap.txt\n");
-    fs.writeFileSync("ap.txt", passphrase, { mode: 0o600 });
+    fs.writeFileSync("ap.txt", askpass, { mode: 0o600 });
   }
 
   // ca
@@ -25247,9 +25248,9 @@ const run = (callback) => {
     fs.writeFileSync("ta.key", tlsAuthKey, { mode: 0o600 });
   }
 
-  if (tlsCryptV1Key) {
-    fs.appendFileSync(configFile, "tls-crypt tcv1.key 1\n");
-    fs.writeFileSync("tcv1.key", tlsCryptV1Key, { mode: 0o600 });
+  if (tlsCryptKey) {
+    fs.appendFileSync(configFile, "tls-crypt tc.key 1\n");
+    fs.writeFileSync("tc.key", tlsCryptKey, { mode: 0o600 });
   }
 
   if (tlsCryptV2Key) {
@@ -25257,10 +25258,11 @@ const run = (callback) => {
     fs.writeFileSync("tcv2.key", tlsCryptV2Key, { mode: 0o600 });
   }
 
-  core.info("========== begin configuration ==========");
-  core.info(fs.readFileSync(configFile, "utf8"));
-  core.info("=========== end configuration ===========");
-
+  if (echoConfig === "true") {
+    core.info("========== begin configuration ==========");
+    core.info(fs.readFileSync(configFile, "utf8"));
+    core.info("=========== end configuration ===========");
+  }
   // 2. Run openvpn
 
   // prepare log file

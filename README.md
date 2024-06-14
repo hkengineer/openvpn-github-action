@@ -23,6 +23,7 @@ If you would like to use Passphrase authentication (i.e. Use a password for the 
 | Name          | Description                            | Required |
 |---------------|----------------------------------------|----------|
 | `config_file` | Location of OpenVPN client config file | yes      |
+| `echo_config` | Echo OpenVPN config file to the log    | no       |
 | `hostname`    | Remote OpenVPN server hostname         | yes      |
 | `port`        | Remote OpenVPN server port number      | yes      |
 
@@ -40,17 +41,17 @@ Supported authentication methods:
 | `cert`             | Client certificate                            | Optional (only if not specified inline) |
 | `username`         | Username                                      | Username-password auth                  |
 | `password`         | Password                                      | Username-password auth                  |
+| `askpass`          | Passphrase for the client certificate         | Optional                                |
 | `client_key`       | Local peer's private key                      | Client certificate auth                 |
-| `passphrase`       | Passphrase for the client certificate         | Optional                                |
 | `tls_auth_key`     | Pre-shared secret for TLS-auth HMAC signature | Optional                                |
-| `tls_crypt_v1_key` | Pre-shared secret for TLS-crypt-v1            | Optional                                |
+| `tls_crypt_key`    | Pre-shared secret for TLS-crypt-v1            | Optional                                |
 | `tls_crypt_v2_key` | Pre-shared secret for TLS-crypt-v2            | Optional                                |
 
 
 **Note: It is strongly recommended that you provide all credentials
 via [encrypted secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).**
 
-When providing TLS keys, you should provide *only one of* either `tls_auth_key`, `tls_crypt_v1_key` or `tls_crypt_v2_key`.
+When providing TLS keys, you should provide *only one of* either `tls_auth_key`, `tls_crypt_key` or `tls_crypt_v2_key`.
 You can determine which by checking the value of your key and looking in the header line. 
 [See the docs for more info about TLS in OpenVPN](https://openvpn.net/vpn-server-resources/tls-control-channel-security-in-openvpn-access-server)
 
@@ -79,7 +80,7 @@ You can determine which by checking the value of your key and looking in the hea
           cert: ${{ secrets.OVPN_CERT }}
           username: ${{ secrets.OVPN_USERNAME }}
           password: ${{ secrets.OVPN_PASSWORD }}
-          passphrase: ${{ secrets.OVPN_PASSPHRASE }}
+          askpass: ${{ secrets.OVPN_PASSPHRASE }}
           client_key: ${{ secrets.OVPN_CLIENT_KEY }}
           tls_auth_key: ${{ secrets.OVPN_TLS_AUTH_KEY }}
           tls_crypt_key: ${{ secrets.OVPN_TLS_CRYPT_KEY }}
