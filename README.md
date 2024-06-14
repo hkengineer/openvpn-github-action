@@ -3,10 +3,7 @@
 GitHub Action for connecting to OpenVPN server.
 
 A modification of https://github.com/kota65535/github-openvpn-connect-action to include the following inputs:
-- CA <ca>, 
-- Client Certificate <cert>, 
-- Passphrase <askpass>, and 
-- tls-crypt <tls-crypt>
+- Passphrase <askpass>
 
 To install OpenVPN on your Linux server, follow the instructions here:
 - https://www.cyberciti.biz/faq/ubuntu-20-04-lts-set-up-openvpn-server-in-5-minutes/ or
